@@ -46,6 +46,7 @@ function addMovieActor($mid, $aid, $r){
 	mysql_select_db("CS143", $db_connection);
 	$insertQuery = "insert into MovieActor values($mid, $aid, $role)";
 	$set = mysql_query($insertQuery, $db_connection);
+	mysql_close($db_connection);
 }
 
 //main 

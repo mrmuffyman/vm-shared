@@ -2,6 +2,7 @@
 <html>
 
 <h1> Add new movie: </h1>
+<a href = "index.html"> Back to main page </a> <br><br>
 <form action = "addMovieInfo.php" method = "get">
 Title: <input type="text" name="title"> <br>
 Company: <input type="text" name="company"> <br>

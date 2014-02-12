@@ -2,8 +2,7 @@
 <html>
 
 <h1> Add new Movie/Actor relation: </h1>
-
-<?php 
+<a href = "index.html"> Back to main page </a> <br><br><?php 
 
 include 'validation.php';
 

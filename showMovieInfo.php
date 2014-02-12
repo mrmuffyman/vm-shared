@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-
-<?php
+<a href = "index.html"> Back to main page </a> <br><br><?php
 
 if($_GET){
         $entry = $_GET["mid"];

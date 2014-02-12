@@ -2,6 +2,7 @@
 <html>
 
 <h1> Search Page</h1>
+<a href = "index.html"> Back to main page </a> <br><br>
 <p> Search for Actor/Movie </p>
 <form action = "search.php" method ="get">
 <input type="text" name="query"><input type="submit" value="Search">

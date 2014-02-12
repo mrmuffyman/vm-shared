@@ -2,6 +2,7 @@
 <html>
 <h1>Add Director</h1>
 <p> Director Format: (First Name, Last Name, DOB, DOD) </p>
+<a href = "index.html"> Back to main page </a> <br><br>
 <form action = "addActorDirector.php" method ="get">
 <input type="text" name="FNAME">
 <input type="text" name="LNAME">

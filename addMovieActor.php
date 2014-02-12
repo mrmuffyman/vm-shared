@@ -36,14 +36,14 @@ function displayMovieAndActor(){
 
 function addMovieActor($mid, $aid, $r){
 	$role = validateName($r);
-	echo "$mid $aid $role";
+//	echo "$mid $aid $role";
 	if(!$mid || ! $aid || ! $role){
 		echo "Invalid Input";
 		return false;
 	}
 	$db_connection = mysql_connect("localhost", "cs143", "");
 	mysql_select_db("CS143", $db_connection);
-	$insertQuery = "insert into MovieActor values($mid, $aid, $role)";
+	$insertQuery = "INSERT INTO MovieActor VALUES($mid, $aid, \"$role\")";
 	$set = mysql_query($insertQuery, $db_connection);
 	mysql_close($db_connection);
 }

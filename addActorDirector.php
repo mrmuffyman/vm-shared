@@ -8,6 +8,15 @@
 <input type="text" name="DOB">
 <input type="text" name="DOD">
 <input type="submit" value="Submit New Director">
+<br><br>
+<p> Actor Format: (First Name, Last Name, DOB, DOD) </p>
+<form action = "addActorDirector.php" method ="get">
+<input type="text" name="aFNAME">
+<input type="text" name="aLNAME">
+<input type="text" name="aSEX">
+<input type="text" name="aDOB">
+<input type="text" name="aDOD">
+<input type="submit" value="Submit New Actor">
 </form>
 <br>
 
@@ -80,6 +89,65 @@ function addDirector($fname,$lname,$dob,$dod)
 	mysql_close($db_connection);
 	return false;
 }
+function addActor($fname,$lname,$sex,$dob,$dod)
+{
+	//start by making sure we can interperet input
+	$FirstName = validateName($fname);
+	$LastName  = validateName($lname);
+	$Sex       = $sex;
+	$DOB	   = validateDate($dob);
+	$DOD	   = validateDate($dod);
+	if(! $FirstName || ! $LastName || ! $DOB || ! $DOD)
+	{
+		// One of the user input texts was invalid
+		echo "Invalid input";
+		return false;
+	}
+	// Input is valid, build query and insert into DB!
+	$db_connection = mysql_connect("localhost", "cs143", "");
+	mysql_select_db("CS143", $db_connection);
+	// Have to get the next valid ID
+	// First check if the person is already in the DB
+	$actorInDB = 'select * from Actor where last="' . $LastName . '" and first= "' . "$FirstName" . '"';
+	$getDirRows = mysql_query($actorInDB,$db_connection);
+	$resActor = mysql_fetch_row($getDirRows);
+	if(! empty( $resActor ))
+	{
+		echo "Actor already exists! <br>";
+		return false;
+	}
+	echo "Putting new Actor in DB <br>";
+	// Specified Actor is not in the DB yet, so grab an ID for it
+	$getID = mysql_query("select * from MaxPersonID");
+	$tuple1= mysql_fetch_row($getID);
+	$idToInsert = $tuple1[0] + 1;
+	// Now increment the one in the DB
+	$incrementID = "update MaxPersonID set id = $idToInsert";
+	$setID = mysql_query($incrementID, $db_connection);
+	// Now add the new Actor to the DB
+	$insertActor = "insert into Actor 
+			values($idToInsert," . '"' . "$LastName" . '" ,"' . "$FirstName" . '" ,"'. "$Sex" . '" ,';
+   	if($DOB != "NULL")
+	{
+		$insertActor	.= '"' . "$DOB" . '",';
+	}	
+	else	// Don't need double quotes around NULL
+	{
+		$insertActor	.= "$DOB ,";
+	}
+	if($DOD != "NULL")
+	{
+		$insertActor	.= '"' . "$DOD" . '");';
+	}	
+	else	// Don't need double quotes around NULL
+	{
+		$insertActor	.= "$DOD);";
+	}
+	$putDBActor = mysql_query($insertActor,$db_connection);
+	echo "Successfully added $FirstName $LastName to the DB";
+	mysql_close($db_connection);
+	return false;
+}
 
 // Entry Point
 if($_GET)
@@ -89,6 +157,12 @@ if($_GET)
 	$L = $_GET["LNAME"];
 	$B = $_GET["DOB"];
 	$D = $_GET["DOD"];
+	//actor vars
+	$aF = $_GET["aFNAME"];
+	$aL = $_GET["aLNAME"];
+	$aS = $_GET["aSEX"];
+	$aB = $_GET["aDOB"];
+	$aD = $_GET["aDOD"];
 	// Empty Dates parsed as "NULL"
 	if($B == "")
 	{
@@ -98,8 +172,19 @@ if($_GET)
 	{
 		$D = "NULL";
 	}
-	echo "You entered First = $F, Last = $L, DOB = $B, DOD = $D<br>";
+	//Actor null handling
+	if($aB == "")
+	{
+		$aB = "NULL";
+	}	
+	if($aD == "")
+	{
+		$aD = "NULL";
+	}
+	echo "For Director you entered First = $F, Last = $L, DOB = $B, DOD = $D<br>";
+	echo "For Actor you entered $aF, Last = $aL, Sex = $aS, DOB = $aB, DOD = $aD<br>";
 	addDirector($F,$L,$B,$D);
+	addActor($aF,$aL,$aS,$aB,$aD);
 } 
 ?>
 

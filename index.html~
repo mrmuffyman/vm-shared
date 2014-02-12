@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+
+<h1> CS 143 Movie Database </h1>
+
+<div id="nav">
+	<a href = "search.php"> Search for an Actor/Movie </a>
+	<a href = "addActorDirector.php"> Add Actor/Director </a>
+	<a href = "addMovieInfo.php"> Add Movie Information </a>
+	<a href = "addMovieActor.php"> Add Movie Actor Relation </a>
+	<a href = "addMovieDirector.php"> Add Movie Director Relation </a>
+</div>
+
+</html>

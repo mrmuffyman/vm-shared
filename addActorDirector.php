@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <h1>Add Director</h1>
-<p> Director Format: (First Name, Last Name, DOB, DOD) </p>
 <a href = "index.html"> Back to main page </a> <br><br>
 <form action = "addActorDirector.php" method ="get">
+
+<input type="radio" name="dora" value="dir"> Director
+<input type="radio" name="dora" value="act"> Actor <br>
+<p> Date of birth and death are in YYYY-MM-DD format. </p>
+<p> Director Format: First Name, Last Name, DOB, DOD </p>
 <input type="text" name="FNAME">
 <input type="text" name="LNAME">
 <input type="text" name="DOB">
 <input type="text" name="DOD">
 <input type="submit" value="Submit New Director">
 <br><br>
-<p> Actor Format: (First Name, Last Name, DOB, DOD) </p>
-<form action = "addActorDirector.php" method ="get">
+<p> Actor Format: First Name, Last Name,Sex, DOB, DOD  </p>
 <input type="text" name="aFNAME">
 <input type="text" name="aLNAME">
 <input type="text" name="aSEX">
@@ -22,24 +25,17 @@
 <br>
 
 <?php
-// This function should return a string with invalid characters removed
-function validateName ($name)
-{
-	return $name;
-	// if input can't be a name, return false
-}
-//Builds date out of input. Returns SQL formatted date or False;
-function validateDate ($date)
-{
-	return $date;
-}
+include 'validation.php';
+
 function addDirector($fname,$lname,$dob,$dod)
 {
 	//start by making sure we can interperet input
 	$FirstName = validateName($fname);
 	$LastName  = validateName($lname);
-	$DOB	   = validateDate($dob);
-	$DOD	   = validateDate($dod);
+	if(!($DOB = validateDate($dob)) || !($DOD = validateDate($dod))){
+		echo "Invalid Date!";
+		return false;
+	}
 	if(! $FirstName || ! $LastName || ! $DOB || ! $DOD)
 	{
 		// One of the user input texts was invalid
@@ -96,8 +92,10 @@ function addActor($fname,$lname,$sex,$dob,$dod)
 	$FirstName = validateName($fname);
 	$LastName  = validateName($lname);
 	$Sex       = $sex;
-	$DOB	   = validateDate($dob);
-	$DOD	   = validateDate($dod);
+	if(!($DOB = validateDate($dob)) || ! ($DOD = validateDate($dod))){
+		echo "Invalid Date!";
+		return false;
+	}
 	if(! $FirstName || ! $LastName || ! $DOB || ! $DOD)
 	{
 		// One of the user input texts was invalid
@@ -153,6 +151,11 @@ function addActor($fname,$lname,$sex,$dob,$dod)
 // Entry Point
 if($_GET)
 {
+	$DorA = $_GET["dora"];
+	if($DorA == ""){
+		echo "Please specify Actor or Director";
+		return false;
+	}
 	// first name last name birthdate deathdate
 	$F = $_GET["FNAME"];
 	$L = $_GET["LNAME"];
@@ -182,9 +185,13 @@ if($_GET)
 	{
 		$aD = "NULL";
 	}
-	echo "For Director you entered First = $F, Last = $L, DOB = $B, DOD = $D<br>";
-	echo "For Actor you entered $aF, Last = $aL, Sex = $aS, DOB = $aB, DOD = $aD<br>";
+	if($DorA == "dir"){
+	echo "For Director you entered First = $F, Last = $L, DOB = $B, DOD = $D<br>";}
+	if($DorA == "act"){
+	echo "For Actor you entered $aF, Last = $aL, Sex = $aS, DOB = $aB, DOD = $aD<br>";}
+	if($DorA == "dir")
 	addDirector($F,$L,$B,$D);
+	if($DorA == "act")
 	addActor($aF,$aL,$aS,$aB,$aD);
 } 
 ?>

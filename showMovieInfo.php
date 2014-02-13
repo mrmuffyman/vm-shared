@@ -42,10 +42,25 @@ if($_GET){
                         echo "<a href=\"showActorInfo?$row[3]\">$row[1] $row[2]</a> as \"$row[0]\" <br>";
                 }
         }
-
+	echo "<br><br>";
+	
+	$query4 = "SELECT name, time, rating, comment FROM Review WHERE mid = $entry;";
+	$avg = "SELECT AVG(rating) FROM Review WHERE mid = $entry;";
+	$rs4 = mysql_query($query4, $db_connection);
+	$rs5 = mysql_query($avg, $db_connection);
+	$temp = mysql_fetch_row($rs5);
+	if($rs4){
+		echo "Average rating for this movie $temp[0]         <a href=\"addReview.php?mid=$entry\"> Add a review </a><br>";
+		while($row = mysql_fetch_row($rs4)){
+			echo "Review by $row[0]: <br>";
+			echo "Rating: $row[2] Time: $row[1] <br>";
+			echo "$row[3] <br> ---------<br>";
+		}
+	} 
 }
 
 ?>
+	
         <p> Search for other Actors/Movies </p>
         <form action = "search.php" method="get">
         <input type="text" name="query"> <input type="submit" value = "Search">

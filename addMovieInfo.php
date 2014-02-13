@@ -37,7 +37,7 @@ include 'validation.php';
 function addMovie($t, $c, $y, $r, $g){
 	$title = validateName($t);
 	$company = validateName($c);
-	$year = validateDate($y);
+	$year = validateName($y);
 	$rating = validateName($r);
 	$genres = array();
 	if (isset($g)){
